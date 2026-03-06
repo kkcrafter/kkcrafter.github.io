@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from './PostCard.astro';
+import { t, type Lang } from '../i18n/ui';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+// Get published posts for this language, sorted by date descending
+const posts = (
+  await getCollection('blog', ({ data }) => data.lang === lang && !data.draft)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Show the most recent 5
+const recentPosts = posts.slice(0, 5);
+---
+
+<BaseLayout
+  title={t(lang, 'site.title')}
+  description={t(lang, 'site.description')}
+  lang={lang}
+>
+  <section class="hero">
+    <h1>{t(lang, 'home.greeting')}</h1>
+    <p>{t(lang, 'home.intro')}</p>
+  </section>
+
+  {recentPosts.length > 0 && (
+    <section class="recent">
+      <h2>{t(lang, 'home.recentPosts')}</h2>
+      {recentPosts.map((post) => {
+        const slug = post.id.split('/').slice(1).join('/');
+        return (
+          <PostCard
+            title={post.data.title}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+            tags={post.data.tags}
+            lang={lang}
+            href={`/${lang}/blog/${slug}/`}
+          />
+        );
+      })}
+      {posts.length > 5 && (
+        <p class="view-all">
+          <a href={`/${lang}/blog/`}>{t(lang, 'home.viewAll')} &rarr;</a>
+        </p>
+      )}
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 2rem 0 3rem;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--color-muted);
+  }
+
+  .recent h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .view-all {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+</style>

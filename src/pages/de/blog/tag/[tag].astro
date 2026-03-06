@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import BlogListPage from '../../../../components/BlogListPage.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => data.lang === 'de' && !data.draft);
+  const allTags = [...new Set(posts.flatMap((post) => post.data.tags))];
+  return allTags.map((tag) => ({
+    params: { tag },
+  }));
+}
+
+const { tag } = Astro.params;
+---
+
+<BlogListPage lang="de" activeTag={tag} />
