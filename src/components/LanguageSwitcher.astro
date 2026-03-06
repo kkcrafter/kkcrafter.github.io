@@ -1,0 +1,87 @@
+---
+import { languages, getLangFromUrl, type Lang } from '../i18n/ui';
+import { getCollection } from 'astro:content';
+
+const currentLang = getLangFromUrl(Astro.url);
+const currentPath = Astro.url.pathname;
+
+// Build the set of available translations for the current page.
+// For blog posts, check if the same slug exists in each language folder.
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+// Extract the slug portion: e.g. /en/blog/my-post → my-post
+const pathParts = currentPath.replace(/\/$/, '').split('/');
+const isBlogPost = pathParts.includes('blog') && pathParts.length > 3;
+const slug = isBlogPost ? pathParts.slice(3).join('/') : null;
+
+// For each language, determine the target URL and whether it's available.
+const langLinks: { lang: Lang; label: string; href: string; available: boolean }[] = [];
+
+for (const [code, label] of Object.entries(languages)) {
+  const lang = code as Lang;
+
+  if (isBlogPost && slug) {
+    // Check if a translation exists for this slug
+    const exists = allPosts.some((post) => {
+      const postLang = post.id.split('/')[0];
+      const postSlug = post.id.split('/').slice(1).join('/');
+      return postLang === lang && postSlug === slug;
+    });
+    langLinks.push({
+      lang,
+      label,
+      href: `/${lang}/blog/${slug}/`,
+      available: exists,
+    });
+  } else {
+    // For non-blog pages, just swap the language prefix
+    const rest = pathParts.slice(2).join('/');
+    langLinks.push({
+      lang,
+      label,
+      href: `/${lang}/${rest}${rest ? '/' : ''}`,
+      available: true,
+    });
+  }
+}
+---
+
+<span class="lang-switcher">
+  {langLinks.map((link) =>
+    link.lang === currentLang ? (
+      <span class="lang-switcher__current">{link.label}</span>
+    ) : link.available ? (
+      <a href={link.href} class="lang-switcher__link">{link.label}</a>
+    ) : (
+      <span class="lang-switcher__disabled">{link.label}</span>
+    )
+  )}
+</span>
+
+<style>
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+  }
+
+  .lang-switcher__current {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .lang-switcher__link {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .lang-switcher__link:hover {
+    color: var(--color-accent);
+  }
+
+  .lang-switcher__disabled {
+    color: var(--color-border);
+    cursor: default;
+  }
+</style>

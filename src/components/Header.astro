@@ -1,0 +1,65 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { getLangFromUrl, t } from '../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<header class="header">
+  <nav class="header__nav">
+    <a href={`/${lang}/`} class="header__logo">
+      {t(lang, 'site.title')}
+    </a>
+    <div class="header__links">
+      <a href={`/${lang}/`}>{t(lang, 'nav.home')}</a>
+      <a href={`/${lang}/blog/`}>{t(lang, 'nav.blog')}</a>
+      <LanguageSwitcher />
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>
+
+<style>
+  .header {
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+  }
+
+  .header__nav {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .header__logo {
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .header__logo:hover {
+    color: var(--color-accent);
+  }
+
+  .header__links {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .header__links a {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .header__links a:hover {
+    color: var(--color-accent);
+  }
+</style>
