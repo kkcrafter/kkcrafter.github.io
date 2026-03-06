@@ -1,0 +1,14 @@
+services:
+  blog:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "4321:4321"
+    volumes:
+      # Bind mount for hot reload (sync source changes)
+      - .:/app
+      # Anonymous volume to preserve node_modules from image
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
