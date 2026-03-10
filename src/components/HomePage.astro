@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import LandingLayout from '../layouts/LandingLayout.astro';
 import PostCard from './PostCard.astro';
 import { t, type Lang } from '../i18n/ui';
 import { getCollection } from 'astro:content';
@@ -15,66 +15,238 @@ const posts = (
   await getCollection('blog', ({ data }) => data.lang === lang && !data.draft)
 ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-// Show the most recent 5
-const recentPosts = posts.slice(0, 5);
+// Show the most recent 3 on the landing page
+const recentPosts = posts.slice(0, 3);
 ---
 
-<BaseLayout
+<LandingLayout
   title={t(lang, 'site.title')}
   description={t(lang, 'site.description')}
   lang={lang}
 >
-  <section class="hero">
-    <h1>{t(lang, 'home.greeting')}</h1>
-    <p>{t(lang, 'home.intro')}</p>
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="hero">
+    <div class="hero__inner">
+      <p class="hero__greeting">{t(lang, 'home.greeting')}</p>
+      <h1 class="hero__name">
+        {t(lang, 'home.hero.name')}
+      </h1>
+      <p class="hero__subtitle">{t(lang, 'home.hero.subtitle')}</p>
+      <a href="#about" class="cta-btn cta-btn--hero">
+        {t(lang, 'home.hero.cta')}
+      </a>
+    </div>
   </section>
 
-  {recentPosts.length > 0 && (
-    <section class="recent">
-      <h2>{t(lang, 'home.recentPosts')}</h2>
-      {recentPosts.map((post) => {
-        const slug = post.id.split('/').slice(1).join('/');
-        return (
-          <PostCard
-            title={post.data.title}
-            description={post.data.description}
-            pubDate={post.data.pubDate}
-            tags={post.data.tags}
-            lang={lang}
-            href={`/${lang}/blog/${slug}/`}
-          />
-        );
-      })}
-      {posts.length > 5 && (
-        <p class="view-all">
-          <a href={`/${lang}/blog/`}>{t(lang, 'home.viewAll')} &rarr;</a>
-        </p>
+  <!-- ========== ABOUT ========== -->
+  <section class="about" id="about">
+    <div class="section__inner">
+      <h2 class="section__title section__title--light">{t(lang, 'home.about.title')}</h2>
+      <div class="about__content">
+        <p>{t(lang, 'home.about.p1')}</p>
+        <p>{t(lang, 'home.about.p2')}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOG ========== -->
+  <section class="blog-preview" id="blog">
+    <div class="section__inner">
+      <h2 class="section__title">{t(lang, 'home.blog.title')}</h2>
+
+      {recentPosts.length > 0 ? (
+        <div class="blog-preview__grid">
+          {recentPosts.map((post) => {
+            const slug = post.id.split('/').slice(1).join('/');
+            return (
+              <PostCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                tags={post.data.tags}
+                lang={lang}
+                href={`/${lang}/blog/${slug}/`}
+                variant="card"
+              />
+            );
+          })}
+        </div>
+      ) : (
+        <p class="blog-preview__empty">{t(lang, 'blog.noPosts')}</p>
       )}
-    </section>
-  )}
-</BaseLayout>
+
+      <div class="blog-preview__cta">
+        <a href={`/${lang}/blog/`} class="cta-btn cta-btn--blog">
+          {t(lang, 'home.blog.viewAll')} &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section class="contact" id="contact">
+    <div class="section__inner">
+      <h2 class="section__title section__title--light">{t(lang, 'home.contact.title')}</h2>
+      <p class="contact__text">{t(lang, 'home.contact.text')}</p>
+      <a
+        href="https://linkedin.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="cta-btn cta-btn--light"
+      >
+        {t(lang, 'home.contact.cta')}
+      </a>
+    </div>
+  </section>
+</LandingLayout>
 
 <style>
+  /* ========== HERO ========== */
   .hero {
-    padding: 2rem 0 3rem;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: var(--color-bg);
+    padding: 2rem 1.5rem;
   }
 
-  .hero h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+  .hero__inner {
+    animation: fadeInUp 0.8s ease-out both;
   }
 
-  .hero p {
-    font-size: 1.1rem;
+  .hero__greeting {
+    font-size: clamp(1rem, 2vw, 1.25rem);
     color: var(--color-muted);
-  }
-
-  .recent h2 {
     margin-bottom: 0.5rem;
+    font-weight: 400;
   }
 
-  .view-all {
-    margin-top: 1rem;
-    font-size: 0.9rem;
+  .hero__name {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+
+  .hero__subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    color: var(--color-muted);
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 80vh;
+    }
+  }
+
+  /* ========== ABOUT ========== */
+  .about {
+    background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+    padding: 8rem 1.5rem 12rem;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .about .section__title--light {
+    color: #ffffff;
+  }
+
+  .about__content {
+    max-width: 640px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.8;
+  }
+
+  .about__content p {
+    color: rgba(255, 255, 255, 0.92);
+    margin-bottom: 1.25rem;
+  }
+
+  @media (max-width: 768px) {
+    .about {
+      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+      padding: 5rem 1.5rem 8rem;
+    }
+  }
+
+  /* ========== BLOG PREVIEW ========== */
+  .blog-preview {
+    background-color: var(--color-bg);
+    padding: 6rem 1.5rem;
+    margin-top: -5rem;
+  }
+
+  .blog-preview__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .blog-preview__cta {
+    text-align: center;
+  }
+
+  .blog-preview__empty {
+    color: var(--color-muted);
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  /* ========== CONTACT ========== */
+  .contact {
+    background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+    clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+    padding: 10rem 1.5rem 6rem;
+    margin-top: -5rem;
+    text-align: center;
+    color: #ffffff;
+  }
+
+  .contact .section__title--light {
+    color: #ffffff;
+  }
+
+  .contact__text {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.92);
+    margin-bottom: 2rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (max-width: 768px) {
+    .contact {
+      clip-path: polygon(0 8%, 100% 0, 100% 100%, 0 100%);
+      padding: 7rem 1.5rem 4rem;
+    }
+  }
+
+  /* ========== SHARED SECTION STYLES ========== */
+  .section__title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--color-text);
   }
 </style>

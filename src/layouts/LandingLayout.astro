@@ -1,0 +1,37 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  lang?: string;
+}
+
+const { title, description, image, lang = 'en' } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <BaseHead title={title} description={description} image={image} lang={lang} />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
+    <Header />
+    <main id="main-content" class="landing-main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .landing-main {
+    max-width: none;
+    padding: 0;
+  }
+</style>

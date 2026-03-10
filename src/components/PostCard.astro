@@ -10,12 +10,14 @@ interface Props {
   tags: string[];
   lang: Lang;
   href: string;
+  searchSlug?: string;
+  variant?: 'list' | 'card';
 }
 
-const { title, description, pubDate, tags, lang, href } = Astro.props;
+const { title, description, pubDate, tags, lang, href, searchSlug, variant = 'list' } = Astro.props;
 ---
 
-<article class="post-card">
+<article class:list={['post-card', { 'post-card--card': variant === 'card' }]} data-search-slug={searchSlug}>
   <a href={href} class="post-card__link">
     <h3 class="post-card__title">{title}</h3>
   </a>
@@ -91,5 +93,22 @@ const { title, description, pubDate, tags, lang, href } = Astro.props;
     color: var(--color-accent);
     border-color: var(--color-accent);
     text-decoration: none;
+  }
+
+  /* --- Card variant (for landing page grid) --- */
+  .post-card--card {
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    transition: border-color 0.15s ease;
+  }
+
+  .post-card--card:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .post-card--card:hover {
+    border-color: var(--color-accent);
   }
 </style>
