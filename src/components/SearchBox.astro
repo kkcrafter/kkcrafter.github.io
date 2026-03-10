@@ -1,0 +1,121 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<div class="search-box">
+  <label for="blog-search" class="sr-only">{t(lang, 'search.label')}</label>
+  <input
+    type="search"
+    id="blog-search"
+    class="search-box__input"
+    placeholder={t(lang, 'search.placeholder')}
+    autocomplete="off"
+  />
+</div>
+
+<p id="search-no-results" class="search-no-results" hidden>
+  {t(lang, 'search.noResults')}
+</p>
+
+<style>
+  .search-box {
+    margin-bottom: 1rem;
+  }
+
+  .search-box__input {
+    width: 100%;
+    padding: 0.5em 0.75em;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    transition: border-color 0.15s ease;
+  }
+
+  .search-box__input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+    border-color: var(--color-accent);
+  }
+
+  .search-box__input::placeholder {
+    color: var(--color-muted);
+  }
+
+  .search-no-results {
+    color: var(--color-muted);
+    padding: 2rem 0;
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('blog-search');
+    const noResults = document.getElementById('search-no-results');
+    const indexEl = document.getElementById('search-index');
+    if (!input || !indexEl) return;
+
+    const index = JSON.parse(indexEl.textContent);
+    const articles = document.querySelectorAll('[data-search-slug]');
+
+    // Read initial query from URL
+    const params = new URLSearchParams(window.location.search);
+    const initialQ = params.get('q') || '';
+    if (initialQ) {
+      input.value = initialQ;
+      filterPosts(initialQ);
+    }
+
+    input.addEventListener('input', function () {
+      const q = input.value.trim();
+      filterPosts(q);
+
+      // Sync to URL without creating history entries
+      const url = new URL(window.location);
+      if (q) {
+        url.searchParams.set('q', q);
+      } else {
+        url.searchParams.delete('q');
+      }
+      history.replaceState(null, '', url);
+    });
+
+    function filterPosts(query) {
+      if (!query) {
+        articles.forEach(function (el) { el.style.display = ''; });
+        noResults.hidden = true;
+        return;
+      }
+
+      const q = query.toLowerCase();
+      let matchCount = 0;
+
+      articles.forEach(function (el) {
+        const slug = el.getAttribute('data-search-slug');
+        const entry = index.find(function (e) { return e.slug === slug; });
+        if (!entry) {
+          el.style.display = 'none';
+          return;
+        }
+
+        const matches =
+          entry.title.toLowerCase().includes(q) ||
+          entry.description.toLowerCase().includes(q) ||
+          entry.tags.some(function (t) { return t.toLowerCase().includes(q); });
+
+        el.style.display = matches ? '' : 'none';
+        if (matches) matchCount++;
+      });
+
+      noResults.hidden = matchCount > 0;
+    }
+  });
+</script>

@@ -46,42 +46,64 @@ for (const [code, label] of Object.entries(languages)) {
 }
 ---
 
-<span class="lang-switcher">
-  {langLinks.map((link) =>
-    link.lang === currentLang ? (
-      <span class="lang-switcher__current">{link.label}</span>
-    ) : link.available ? (
-      <a href={link.href} class="lang-switcher__link">{link.label}</a>
-    ) : (
-      <span class="lang-switcher__disabled">{link.label}</span>
-    )
-  )}
-</span>
+<div class="lang-switcher">
+  <select
+    id="lang-select"
+    class="lang-switcher__select"
+    aria-label="Select language"
+  >
+    {langLinks.map((link) => (
+      <option
+        value={link.href}
+        selected={link.lang === currentLang}
+        disabled={!link.available}
+      >
+        {link.label}
+      </option>
+    ))}
+  </select>
+</div>
 
 <style>
   .lang-switcher {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 0.8rem;
   }
 
-  .lang-switcher__current {
+  .lang-switcher__select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: var(--color-surface);
     color: var(--color-text);
-    font-weight: 600;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 0.25em 1.6em 0.25em 0.5em;
+    font-size: 0.8rem;
+    font-family: inherit;
+    cursor: pointer;
+    line-height: 1.4;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.45em center;
+    transition: border-color 0.15s ease;
   }
 
-  .lang-switcher__link {
-    color: var(--color-muted);
-    text-decoration: none;
+  .lang-switcher__select:hover {
+    border-color: var(--color-accent);
   }
 
-  .lang-switcher__link:hover {
-    color: var(--color-accent);
+  .lang-switcher__select:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
   }
 
-  .lang-switcher__disabled {
+  .lang-switcher__select option:disabled {
     color: var(--color-border);
-    cursor: default;
   }
 </style>
+
+<script is:inline>
+  document.getElementById('lang-select').addEventListener('change', function () {
+    window.location.href = this.value;
+  });
+</script>
