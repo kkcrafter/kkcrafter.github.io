@@ -11,7 +11,8 @@ const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 
 // Extract the slug portion: e.g. /en/blog/my-post → my-post
 const pathParts = currentPath.replace(/\/$/, '').split('/');
-const isBlogPost = pathParts.includes('blog') && pathParts.length > 3;
+// A blog post has pattern /lang/blog/slug — but NOT /lang/blog/tag/xxx
+const isBlogPost = pathParts.includes('blog') && pathParts.length > 3 && pathParts[3] !== 'tag';
 const slug = isBlogPost ? pathParts.slice(3).join('/') : null;
 
 // For each language, determine the target URL and whether it's available.
