@@ -9,15 +9,18 @@ interface Props {
   description: string;
   image?: string;
   lang?: string;
+  type?: string;
+  pubDate?: Date;
+  updatedDate?: Date;
 }
 
-const { title, description, image, lang = 'en' } = Astro.props;
+const { title, description, image, lang = 'en', type, pubDate, updatedDate } = Astro.props;
 ---
 
 <!doctype html>
 <html lang={lang}>
   <head>
-    <BaseHead title={title} description={description} image={image} lang={lang} />
+    <BaseHead title={title} description={description} image={image} lang={lang} type={type} pubDate={pubDate} updatedDate={updatedDate} />
   </head>
   <body>
     <a href="#main-content" class="skip-to-content">Skip to content</a>

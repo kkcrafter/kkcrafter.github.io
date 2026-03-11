@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://USERNAME.github.io', // TODO: replace with actual GitHub username
+  site: 'https://kkcrafter.github.io',
   output: 'static',
   i18n: {
     defaultLocale: 'en',

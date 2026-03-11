@@ -18,7 +18,7 @@ const { title, description, pubDate, updatedDate, tags, lang: postLang, image } 
 const lang = (postLang || getLangFromUrl(Astro.url)) as Lang;
 ---
 
-<BaseLayout title={`${title} | ${t(lang, 'site.title')}`} description={description} lang={lang}>
+<BaseLayout title={`${title} | ${t(lang, 'site.title')}`} description={description} lang={lang} type="article" pubDate={pubDate} updatedDate={updatedDate}>
   <article class="post">
     <header class="post__header">
       <h1>{title}</h1>
