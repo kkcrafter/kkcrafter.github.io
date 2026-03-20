@@ -24,3 +24,7 @@ pnpm-debug.log*
 .idea/
 
 # Draft posts (managed by npm scripts)
+src/content/blog/en/astro-blog-setup.md
+src/content/blog/en/docker-local-dev.md
+src/content/blog/de/docker-local-dev.md
+src/content/blog/zh/docker-local-dev.md
