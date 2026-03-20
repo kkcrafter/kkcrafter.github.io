@@ -116,6 +116,7 @@ const { lang } = Astro.props;
       });
 
       noResults.hidden = matchCount > 0;
+      document.dispatchEvent(new CustomEvent('search-filter', { detail: { active: !!query } }));
     }
   });
 </script>

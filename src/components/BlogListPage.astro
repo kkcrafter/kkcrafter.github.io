@@ -92,7 +92,93 @@ const searchIndex = posts.map((post) => {
       <p class="no-posts">{t(lang, 'blog.noPosts')}</p>
     )}
   </div>
+
+  {posts.length > 0 && (
+    <nav class="pagination" aria-label="Pagination" data-prev={t(lang, 'pagination.prev')} data-next={t(lang, 'pagination.next')}>
+    </nav>
+  )}
 </BaseLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function () {
+    var POSTS_PER_PAGE = 5;
+    var pagination = document.querySelector('.pagination');
+    if (!pagination) return;
+
+    var allArticles = Array.from(document.querySelectorAll('.post-list [data-search-slug]'));
+    if (allArticles.length <= POSTS_PER_PAGE) {
+      pagination.style.display = 'none';
+      return;
+    }
+
+    var currentPage = 1;
+    var searchActive = false;
+    var prevLabel = pagination.getAttribute('data-prev') || 'Previous';
+    var nextLabel = pagination.getAttribute('data-next') || 'Next';
+
+    function getTotalPages() {
+      return Math.ceil(allArticles.length / POSTS_PER_PAGE);
+    }
+
+    function showPage(page) {
+      currentPage = page;
+      var start = (page - 1) * POSTS_PER_PAGE;
+      var end = start + POSTS_PER_PAGE;
+
+      allArticles.forEach(function (el, i) {
+        el.style.display = (i >= start && i < end) ? '' : 'none';
+      });
+
+      renderControls();
+    }
+
+    function renderControls() {
+      var totalPages = getTotalPages();
+      pagination.innerHTML = '';
+
+      // Previous button
+      var prevBtn = document.createElement('button');
+      prevBtn.textContent = prevLabel;
+      prevBtn.className = 'pagination__btn';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.addEventListener('click', function () { showPage(currentPage - 1); });
+      pagination.appendChild(prevBtn);
+
+      // Page number buttons
+      for (var i = 1; i <= totalPages; i++) {
+        (function (pageNum) {
+          var btn = document.createElement('button');
+          btn.textContent = pageNum;
+          btn.className = 'pagination__btn' + (pageNum === currentPage ? ' active' : '');
+          btn.addEventListener('click', function () { showPage(pageNum); });
+          pagination.appendChild(btn);
+        })(i);
+      }
+
+      // Next button
+      var nextBtn = document.createElement('button');
+      nextBtn.textContent = nextLabel;
+      nextBtn.className = 'pagination__btn';
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.addEventListener('click', function () { showPage(currentPage + 1); });
+      pagination.appendChild(nextBtn);
+    }
+
+    // Listen for search events
+    document.addEventListener('search-filter', function (e) {
+      searchActive = e.detail.active;
+      if (searchActive) {
+        pagination.style.display = 'none';
+      } else {
+        pagination.style.display = '';
+        showPage(1);
+      }
+    });
+
+    // Initial render
+    showPage(1);
+  });
+</script>
 
 <style>
   h1 {
@@ -133,5 +219,45 @@ const searchIndex = posts.map((post) => {
   .no-posts {
     color: var(--color-muted);
     padding: 2rem 0;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+</style>
+
+<style is:global>
+  .pagination__btn {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-family: inherit;
+    padding: 0.35em 0.75em;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .pagination__btn:hover:not(:disabled) {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .pagination__btn.active {
+    color: #fff;
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .pagination__btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 </style>

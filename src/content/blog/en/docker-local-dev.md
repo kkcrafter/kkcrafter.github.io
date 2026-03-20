@@ -4,7 +4,7 @@ description: "A concise guide to containerizing your dev workflow with Docker an
 pubDate: 2025-06-15
 tags: ["it-dev"]
 lang: "en"
-draft: false
+draft: true
 ---
 
 ## Why Docker for Local Dev?

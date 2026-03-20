@@ -4,7 +4,7 @@ description: "Eine kompakte Anleitung zur Containerisierung des Entwicklungs-Wor
 pubDate: 2025-06-15
 tags: ["it-dev"]
 lang: "de"
-draft: false
+draft: true
 ---
 
 ## Warum Docker für die lokale Entwicklung?

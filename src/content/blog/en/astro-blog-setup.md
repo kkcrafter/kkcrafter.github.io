@@ -4,7 +4,7 @@ description: "How I chose Astro for my portfolio blog and configured it for thre
 pubDate: 2025-06-20
 tags: ["it-dev"]
 lang: "en"
-draft: false
+draft: true
 ---
 
 ## Why Astro?

@@ -45,9 +45,24 @@ src/
 └── styles/           # Global CSS
 ```
 
-## Content Workflow
+## Content Guide
 
-### Adding a Post
+### 1. Updating the Home Page
+
+All home page text lives in **`src/i18n/ui.ts`**. Edit the string values for each language (`en`, `de`, `zh`):
+
+| Key group | Controls |
+|-----------|----------|
+| `home.hero.name`, `home.hero.subtitle`, `home.hero.cta` | Hero section (name, tagline, button) |
+| `home.about.title`, `home.about.p1`, `home.about.p2` | About Me section |
+| `home.contact.title`, `home.contact.text`, `home.contact.cta` | Contact section |
+| `home.blog.title`, `home.blog.viewAll` | Blog preview section labels |
+
+To change the **layout or structure** (e.g., add a new section), edit `src/components/HomePage.astro`.
+
+### 2. Adding & Updating Blog Posts
+
+#### Creating a new post
 
 1. Create a `.md` file in `src/content/blog/{lang}/` (e.g., `src/content/blog/en/my-post.md`)
 2. Add frontmatter:
@@ -55,19 +70,30 @@ src/
 ```yaml
 ---
 title: "My Post Title"
-description: "A short description."
+description: "A short description for previews and Open Graph."
 pubDate: 2025-06-15
-tags: ["it-dev", "docker"]
-lang: "en"
-draft: false
+updatedDate: 2025-06-20    # optional — shown as "Updated on" date
+tags: ["it-dev", "docker"]  # at least 1 required, freeform strings
+lang: "en"                  # must match the folder: en, de, or zh
+draft: false                # true = hidden from production, visible in dev
+image:                      # optional — used as Open Graph cover image
+  src: "./images/cover.jpg"
+  alt: "Description for accessibility"
 ---
 ```
 
 3. Write your content in Markdown below the frontmatter
-4. Set `draft: true` to hide from production (visible in dev server)
-5. Push to `main` to auto-deploy
+4. Push to `main` to auto-deploy
 
-### Translations
+#### Updating a post
+
+Edit the `.md` file directly. Optionally add or update `updatedDate` to show the revision date.
+
+#### Drafts
+
+Set `draft: true` to exclude from production builds. Drafts are still visible on the local dev server for preview.
+
+#### Translations
 
 Use the **same filename** across language folders to link translations:
 
@@ -77,11 +103,55 @@ src/content/blog/de/docker-local-dev.md  ← German translation
 src/content/blog/zh/docker-local-dev.md  ← Chinese translation
 ```
 
-Not every post needs all 3 languages. The language switcher automatically detects available translations.
+Not every post needs all 3 languages. The language switcher automatically detects available translations and disables missing ones.
 
-### Tags
+### 3. Adding Images to Blog Posts
 
-Tags are freeform strings. Add any tag you like — the blog listing page dynamically generates filter buttons from all existing tags. Suggested starters: `it-dev`, `esg`, `language-learning`, `learning-summaries`.
+Store images alongside your posts:
+
+```
+src/content/blog/en/images/my-image.jpg
+```
+
+Reference them in Markdown with a relative path:
+
+```markdown
+![Alt text description](./images/my-image.jpg)
+```
+
+Astro automatically optimizes images at build time (responsive `srcset`, WebP/AVIF formats, lazy loading).
+
+To set a **cover image** for Open Graph previews (LinkedIn, Slack, etc.), add the `image` field in frontmatter:
+
+```yaml
+image:
+  src: "./images/cover.jpg"
+  alt: "Description of the cover image"
+```
+
+### 4. Adding & Updating Tags
+
+Tags are **freeform strings** — add any tag you like in frontmatter:
+
+```yaml
+tags: ["it-dev", "docker", "yoga", "game-theory"]
+```
+
+The blog listing page dynamically collects all tags from published posts and generates filter buttons. No extra configuration is needed.
+
+#### Adding multilingual display labels (optional)
+
+By default, tags display their raw slug (e.g., `it-dev`). To show a friendlier label per language, add an entry in **`src/i18n/tags.ts`**:
+
+```ts
+'my-new-tag': {
+  en: 'My New Tag',
+  de: 'Mein neues Tag',
+  zh: '我的新標籤',
+},
+```
+
+Tags without a mapping in `tags.ts` simply display their slug as-is.
 
 ## Commands
 
