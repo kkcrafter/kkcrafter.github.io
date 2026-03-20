@@ -1,6 +1,12 @@
 ---
-// Root redirect → /en/
-// Astro's i18n config handles this automatically with redirectToDefaultLocale: true,
-// but we keep this as a fallback for direct access to the root.
-return Astro.redirect('/en/');
+// Root redirect → /en/ (instant, no visible flash)
 ---
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="0;url=/en/" />
+    <link rel="canonical" href="/en/" />
+  </head>
+  <body></body>
+</html>
