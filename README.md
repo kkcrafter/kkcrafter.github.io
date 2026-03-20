@@ -91,7 +91,27 @@ Edit the `.md` file directly. Optionally add or update `updatedDate` to show the
 
 #### Drafts
 
-Set `draft: true` to exclude from production builds. Drafts are still visible on the local dev server for preview.
+Draft posts are **git-ignored** so they stay local and never appear in the public GitHub repo. Use the provided npm scripts to manage drafts:
+
+```bash
+# 1. Create a new draft (git-ignored, local only)
+npm run new-post -- en my-post-slug
+
+# 2. Edit the file and preview locally
+npm run dev
+
+# 3. When ready to publish (flips draft → false, removes from .gitignore)
+npm run publish-post -- en my-post-slug
+
+# 4. Commit and push
+git add src/content/blog/en/my-post-slug.md .gitignore
+git commit -m "Publish: my-post-slug"
+git push
+```
+
+- `new-post` creates a markdown file with a frontmatter template and adds it to `.gitignore`
+- `publish-post` sets `draft: false` and removes the file from `.gitignore` so it can be committed
+- Drafts are visible on the local dev server (`npm run dev`) but excluded from production builds
 
 #### Translations
 
@@ -160,6 +180,8 @@ Tags without a mapping in `tags.ts` simply display their slug as-is.
 | `npm run dev` | Start dev server at `localhost:4321` |
 | `npm run build` | Build production site to `./dist/` |
 | `npm run preview` | Preview production build locally |
+| `npm run new-post -- <lang> <slug>` | Create a new draft post (git-ignored) |
+| `npm run publish-post -- <lang> <slug>` | Publish a draft (set `draft: false`, un-ignore) |
 | `docker compose up --build` | Start Docker dev environment |
 | `docker compose down` | Stop Docker environment |
 
