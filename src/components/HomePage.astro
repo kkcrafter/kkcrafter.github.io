@@ -83,6 +83,19 @@ const recentPosts = posts.slice(0, 3);
     </div>
   </section>
 
+  <!-- ========== NOTES PREVIEW ========== -->
+  <section class="notes-preview" id="notes">
+    <div class="section__inner">
+      <h2 class="section__title">{t(lang, 'home.notes.title')}</h2>
+      <p class="notes-preview__desc">{t(lang, 'home.notes.description')}</p>
+      <div class="notes-preview__cta">
+        <a href="/notes" class="cta-btn cta-btn--blog">
+          {t(lang, 'home.notes.viewAll')} &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ========== CONTACT ========== -->
   <section class="contact" id="contact">
     <div class="section__inner">
@@ -211,6 +224,27 @@ const recentPosts = posts.slice(0, 3);
     padding: 2rem 0;
   }
 
+  /* ========== NOTES PREVIEW ========== */
+  .notes-preview {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.06), rgba(6, 182, 212, 0.06));
+    padding: 4rem 1.5rem 6rem;
+    text-align: center;
+    border-top: 1px solid rgba(37, 99, 235, 0.15);
+    border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+  }
+
+  .notes-preview__desc {
+    color: var(--color-muted);
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+
+  .notes-preview__cta {
+    text-align: center;
+  }
+
   /* ========== CONTACT ========== */
   .contact {
     background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
@@ -238,6 +272,35 @@ const recentPosts = posts.slice(0, 3);
     .contact {
       clip-path: polygon(0 8%, 100% 0, 100% 100%, 0 100%);
       padding: 7rem 1.5rem 4rem;
+    }
+  }
+
+  /* ========== SELECTION STYLES (clip-path fix) ========== */
+  /* Must use :global() because Astro scoped styles don't propagate to ::selection */
+  .about :global(*)::selection,
+  .about::selection {
+    background: rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+  }
+
+  .contact :global(*)::selection,
+  .contact::selection {
+    background: rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+  }
+
+  /* Dark mode: stronger gradient tint for notes section */
+  :global([data-theme='dark']) .notes-preview {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(34, 211, 238, 0.08));
+    border-top-color: rgba(59, 130, 246, 0.2);
+    border-bottom-color: rgba(34, 211, 238, 0.2);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .notes-preview {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(34, 211, 238, 0.08));
+      border-top-color: rgba(59, 130, 246, 0.2);
+      border-bottom-color: rgba(34, 211, 238, 0.2);
     }
   }
 
