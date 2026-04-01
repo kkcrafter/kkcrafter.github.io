@@ -1,8 +1,8 @@
 ---
-import LandingLayout from '../layouts/LandingLayout.astro';
-import PostCard from './PostCard.astro';
-import { t, type Lang } from '../i18n/ui';
-import { getCollection } from 'astro:content';
+import LandingLayout from "../layouts/LandingLayout.astro";
+import PostCard from "./PostCard.astro";
+import { t, type Lang } from "../i18n/ui";
+import { getCollection } from "astro:content";
 
 interface Props {
   lang: Lang;
@@ -12,7 +12,7 @@ const { lang } = Astro.props;
 
 // Get published posts for this language, sorted by date descending
 const posts = (
-  await getCollection('blog', ({ data }) => data.lang === lang && !data.draft)
+  await getCollection("blog", ({ data }) => data.lang === lang && !data.draft)
 ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // Show the most recent 3 on the landing page
@@ -20,20 +20,20 @@ const recentPosts = posts.slice(0, 3);
 ---
 
 <LandingLayout
-  title={t(lang, 'site.title')}
-  description={t(lang, 'site.description')}
+  title={t(lang, "site.title")}
+  description={t(lang, "site.description")}
   lang={lang}
 >
   <!-- ========== HERO ========== -->
   <section class="hero" id="hero">
     <div class="hero__inner">
-      <p class="hero__greeting">{t(lang, 'home.greeting')}</p>
+      <p class="hero__greeting">{t(lang, "home.greeting")}</p>
       <h1 class="hero__name">
-        {t(lang, 'home.hero.name')}
+        {t(lang, "home.hero.name")}
       </h1>
-      <p class="hero__subtitle">{t(lang, 'home.hero.subtitle')}</p>
+      <p class="hero__subtitle">{t(lang, "home.hero.subtitle")}</p>
       <a href="#about" class="cta-btn cta-btn--hero">
-        {t(lang, 'home.hero.cta')}
+        {t(lang, "home.hero.cta")}
       </a>
     </div>
   </section>
@@ -41,10 +41,11 @@ const recentPosts = posts.slice(0, 3);
   <!-- ========== ABOUT ========== -->
   <section class="about" id="about">
     <div class="section__inner">
-      <h2 class="section__title section__title--light">{t(lang, 'home.about.title')}</h2>
+      <h2 class="section__title section__title--light">
+        {t(lang, "home.about.title")}
+      </h2>
       <div class="about__content">
-        <p>{t(lang, 'home.about.p1')}</p>
-        <p>{t(lang, 'home.about.p2')}</p>
+        <p>{t(lang, "home.about.p1")}</p>
       </div>
     </div>
   </section>
@@ -52,32 +53,34 @@ const recentPosts = posts.slice(0, 3);
   <!-- ========== BLOG ========== -->
   <section class="blog-preview" id="blog">
     <div class="section__inner">
-      <h2 class="section__title">{t(lang, 'home.blog.title')}</h2>
+      <h2 class="section__title">{t(lang, "home.blog.title")}</h2>
 
-      {recentPosts.length > 0 ? (
-        <div class="blog-preview__grid">
-          {recentPosts.map((post) => {
-            const slug = post.id.split('/').slice(1).join('/');
-            return (
-              <PostCard
-                title={post.data.title}
-                description={post.data.description}
-                pubDate={post.data.pubDate}
-                tags={post.data.tags}
-                lang={lang}
-                href={`/${lang}/blog/${slug}/`}
-                variant="card"
-              />
-            );
-          })}
-        </div>
-      ) : (
-        <p class="blog-preview__empty">{t(lang, 'blog.noPosts')}</p>
-      )}
+      {
+        recentPosts.length > 0 ? (
+          <div class="blog-preview__grid">
+            {recentPosts.map((post) => {
+              const slug = post.id.split("/").slice(1).join("/");
+              return (
+                <PostCard
+                  title={post.data.title}
+                  description={post.data.description}
+                  pubDate={post.data.pubDate}
+                  tags={post.data.tags}
+                  lang={lang}
+                  href={`/${lang}/blog/${slug}/`}
+                  variant="card"
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <p class="blog-preview__empty">{t(lang, "blog.noPosts")}</p>
+        )
+      }
 
       <div class="blog-preview__cta">
         <a href={`/${lang}/blog/`} class="cta-btn cta-btn--blog">
-          {t(lang, 'home.blog.viewAll')} &rarr;
+          {t(lang, "home.blog.viewAll")} &rarr;
         </a>
       </div>
     </div>
@@ -86,11 +89,11 @@ const recentPosts = posts.slice(0, 3);
   <!-- ========== NOTES PREVIEW ========== -->
   <section class="notes-preview" id="notes">
     <div class="section__inner">
-      <h2 class="section__title">{t(lang, 'home.notes.title')}</h2>
-      <p class="notes-preview__desc">{t(lang, 'home.notes.description')}</p>
+      <h2 class="section__title">{t(lang, "home.notes.title")}</h2>
+      <p class="notes-preview__desc">{t(lang, "home.notes.description")}</p>
       <div class="notes-preview__cta">
         <a href="/notes" class="cta-btn cta-btn--blog">
-          {t(lang, 'home.notes.viewAll')} &rarr;
+          {t(lang, "home.notes.viewAll")} &rarr;
         </a>
       </div>
     </div>
@@ -99,15 +102,17 @@ const recentPosts = posts.slice(0, 3);
   <!-- ========== CONTACT ========== -->
   <section class="contact" id="contact">
     <div class="section__inner">
-      <h2 class="section__title section__title--light">{t(lang, 'home.contact.title')}</h2>
-      <p class="contact__text">{t(lang, 'home.contact.text')}</p>
+      <h2 class="section__title section__title--light">
+        {t(lang, "home.contact.title")}
+      </h2>
+      <p class="contact__text">{t(lang, "home.contact.text")}</p>
       <a
         href="https://www.linkedin.com/in/kmkwokkelvin/"
         target="_blank"
         rel="noopener noreferrer"
         class="cta-btn cta-btn--light"
       >
-        {t(lang, 'home.contact.cta')}
+        {t(lang, "home.contact.cta")}
       </a>
     </div>
   </section>
@@ -170,11 +175,24 @@ const recentPosts = posts.slice(0, 3);
 
   /* ========== ABOUT ========== */
   .about {
-    background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+    position: relative;
+    isolation: isolate;
     padding: 8rem 1.5rem 12rem;
     color: #ffffff;
     text-align: center;
+  }
+
+  .about::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      var(--color-gradient-start),
+      var(--color-gradient-end)
+    );
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+    z-index: -1;
   }
 
   .about .section__title--light {
@@ -195,8 +213,10 @@ const recentPosts = posts.slice(0, 3);
 
   @media (max-width: 768px) {
     .about {
-      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
       padding: 5rem 1.5rem 8rem;
+    }
+    .about::before {
+      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
     }
   }
 
@@ -226,7 +246,11 @@ const recentPosts = posts.slice(0, 3);
 
   /* ========== NOTES PREVIEW ========== */
   .notes-preview {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.06), rgba(6, 182, 212, 0.06));
+    background: linear-gradient(
+      135deg,
+      rgba(37, 99, 235, 0.06),
+      rgba(6, 182, 212, 0.06)
+    );
     padding: 4rem 1.5rem 6rem;
     text-align: center;
     border-top: 1px solid rgba(37, 99, 235, 0.15);
@@ -247,12 +271,25 @@ const recentPosts = posts.slice(0, 3);
 
   /* ========== CONTACT ========== */
   .contact {
-    background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
-    clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+    position: relative;
+    isolation: isolate;
     padding: 10rem 1.5rem 6rem;
     margin-top: -5rem;
     text-align: center;
     color: #ffffff;
+  }
+
+  .contact::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      var(--color-gradient-start),
+      var(--color-gradient-end)
+    );
+    clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+    z-index: -1;
   }
 
   .contact .section__title--light {
@@ -270,35 +307,31 @@ const recentPosts = posts.slice(0, 3);
 
   @media (max-width: 768px) {
     .contact {
-      clip-path: polygon(0 8%, 100% 0, 100% 100%, 0 100%);
       padding: 7rem 1.5rem 4rem;
+    }
+    .contact::before {
+      clip-path: polygon(0 8%, 100% 0, 100% 100%, 0 100%);
     }
   }
 
-  /* ========== SELECTION STYLES (clip-path fix) ========== */
-  /* Must use :global() because Astro scoped styles don't propagate to ::selection */
-  .about :global(*)::selection,
-  .about::selection {
-    background: rgba(255, 255, 255, 0.3) !important;
-    color: #ffffff !important;
-  }
-
-  .contact :global(*)::selection,
-  .contact::selection {
-    background: rgba(255, 255, 255, 0.3) !important;
-    color: #ffffff !important;
-  }
-
   /* Dark mode: stronger gradient tint for notes section */
-  :global([data-theme='dark']) .notes-preview {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(34, 211, 238, 0.08));
+  :global([data-theme="dark"]) .notes-preview {
+    background: linear-gradient(
+      135deg,
+      rgba(59, 130, 246, 0.08),
+      rgba(34, 211, 238, 0.08)
+    );
     border-top-color: rgba(59, 130, 246, 0.2);
     border-bottom-color: rgba(34, 211, 238, 0.2);
   }
 
   @media (prefers-color-scheme: dark) {
-    :global(:root:not([data-theme='light'])) .notes-preview {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(34, 211, 238, 0.08));
+    :global(:root:not([data-theme="light"])) .notes-preview {
+      background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.08),
+        rgba(34, 211, 238, 0.08)
+      );
       border-top-color: rgba(59, 130, 246, 0.2);
       border-bottom-color: rgba(34, 211, 238, 0.2);
     }
