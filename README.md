@@ -51,12 +51,12 @@ src/
 
 All home page text lives in **`src/i18n/ui.ts`**. Edit the string values for each language (`en`, `de`, `zh`):
 
-| Key group | Controls |
-|-----------|----------|
-| `home.hero.name`, `home.hero.subtitle`, `home.hero.cta` | Hero section (name, tagline, button) |
-| `home.about.title`, `home.about.p1`, `home.about.p2` | About Me section |
-| `home.contact.title`, `home.contact.text`, `home.contact.cta` | Contact section |
-| `home.blog.title`, `home.blog.viewAll` | Blog preview section labels |
+| Key group                                                     | Controls                             |
+| ------------------------------------------------------------- | ------------------------------------ |
+| `home.hero.name`, `home.hero.subtitle`, `home.hero.cta`       | Hero section (name, tagline, button) |
+| `home.about.title`, `home.about.p1`                           | About Me section                     |
+| `home.contact.title`, `home.contact.text`, `home.contact.cta` | Contact section                      |
+| `home.blog.title`, `home.blog.viewAll`                        | Blog preview section labels          |
 
 To change the **layout or structure** (e.g., add a new section), edit `src/components/HomePage.astro`.
 
@@ -175,15 +175,15 @@ Tags without a mapping in `tags.ts` simply display their slug as-is.
 
 ## Commands
 
-| Command | Action |
-|---------|--------|
-| `npm run dev` | Start dev server at `localhost:4321` |
-| `npm run build` | Build production site to `./dist/` |
-| `npm run preview` | Preview production build locally |
-| `npm run new-post -- <lang> <slug>` | Create a new draft post (git-ignored) |
+| Command                                 | Action                                          |
+| --------------------------------------- | ----------------------------------------------- |
+| `npm run dev`                           | Start dev server at `localhost:4321`            |
+| `npm run build`                         | Build production site to `./dist/`              |
+| `npm run preview`                       | Preview production build locally                |
+| `npm run new-post -- <lang> <slug>`     | Create a new draft post (git-ignored)           |
 | `npm run publish-post -- <lang> <slug>` | Publish a draft (set `draft: false`, un-ignore) |
-| `docker compose up --build` | Start Docker dev environment |
-| `docker compose down` | Stop Docker environment |
+| `docker compose up --build`             | Start Docker dev environment                    |
+| `docker compose down`                   | Stop Docker environment                         |
 
 ## Deployment
 
