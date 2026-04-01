@@ -92,7 +92,7 @@ const recentPosts = posts.slice(0, 3);
       <h2 class="section__title">{t(lang, "home.notes.title")}</h2>
       <p class="notes-preview__desc">{t(lang, "home.notes.description")}</p>
       <div class="notes-preview__cta">
-        <a href="/notes" class="cta-btn cta-btn--blog">
+        <a href={`/${lang}/notes/`} class="cta-btn cta-btn--blog">
           {t(lang, "home.notes.viewAll")} &rarr;
         </a>
       </div>

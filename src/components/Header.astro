@@ -15,7 +15,7 @@ const lang = getLangFromUrl(Astro.url);
       <a href={`/${lang}/`}>{t(lang, 'nav.home')}</a>
       <a href={`/${lang}/about/`}>{t(lang, 'nav.about')}</a>
       <a href={`/${lang}/blog/`}>{t(lang, 'nav.blog')}</a>
-      <a href="/notes">{t(lang, 'nav.notes')}</a>
+      <a href={`/${lang}/notes/`}>{t(lang, 'nav.notes')}</a>
       <LanguageSwitcher />
       <ThemeToggle />
     </div>

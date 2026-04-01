@@ -1,0 +1,430 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { notes } from '../data/notes';
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const tags = [...new Set(notes.map((n) => n.tag))];
+const title = t(lang, 'home.notes.title');
+const description = t(lang, 'home.notes.description');
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+  <div class="notes-page">
+    <h1>{title}</h1>
+    <p class="notes-desc">{description}</p>
+
+    <div class="notes-toolbar">
+      <div class="tag-row">
+        <button class="tag-pill active" data-tag="all">All</button>
+        {tags.map((tag) => (
+          <button class="tag-pill" data-tag={tag}>{tag}</button>
+        ))}
+      </div>
+      <div class="toggle-group">
+        <button class="toggle-btn active" id="btn-list" title="List view" aria-label="List view">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" rx="1" fill="currentColor"/><rect x="1" y="7" width="14" height="2" rx="1" fill="currentColor"/><rect x="1" y="11" width="14" height="2" rx="1" fill="currentColor"/></svg>
+        </button>
+        <div class="toggle-divider"></div>
+        <button class="toggle-btn" id="btn-grid" title="Grid view" aria-label="Grid view">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- List view -->
+    <div class="list-view" id="list-view">
+      {notes.map((note) => (
+        <a href={note.url} target="_blank" rel="noopener noreferrer" class={`banner-row ${note.color}`} data-tag={note.tag}>
+          <div class={`banner-icon ${note.color}`}>{note.icon}</div>
+          <div class="banner-body">
+            <p class="banner-title">{note.title}</p>
+            <p class="banner-desc">{note.description}</p>
+          </div>
+          <div class="banner-meta">
+            <span class="tag-badge">{note.tag}</span>
+            <span class="arrow">&nearr;</span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Grid view -->
+    <div class="grid-view hidden" id="grid-view">
+      {notes.map((note) => (
+        <a href={note.url} target="_blank" rel="noopener noreferrer" class={`grid-card ${note.color}`} data-tag={note.tag}>
+          <div class="grid-card-top">
+            <div class={`grid-icon ${note.color}`}>{note.icon}</div>
+            <p class="grid-card-title">{note.title}</p>
+          </div>
+          <p class="grid-card-desc">{note.description}</p>
+          <div class="grid-footer">
+            <span class="tag-badge">{note.tag}</span>
+            <span class="arrow">&nearr;</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    var btnList = document.getElementById('btn-list');
+    var btnGrid = document.getElementById('btn-grid');
+    var listView = document.getElementById('list-view');
+    var gridView = document.getElementById('grid-view');
+
+    function setView(v) {
+      listView.className = v === 'list' ? 'list-view' : 'list-view hidden';
+      gridView.className = v === 'grid' ? 'grid-view' : 'grid-view hidden';
+      btnList.className = 'toggle-btn' + (v === 'list' ? ' active' : '');
+      btnGrid.className = 'toggle-btn' + (v === 'grid' ? ' active' : '');
+      try { localStorage.setItem('notes-view', v); } catch (e) {}
+    }
+
+    btnList.addEventListener('click', function () { setView('list'); });
+    btnGrid.addEventListener('click', function () { setView('grid'); });
+
+    try {
+      var saved = localStorage.getItem('notes-view');
+      if (saved === 'list' || saved === 'grid') setView(saved);
+    } catch (e) {}
+
+    var pills = document.querySelectorAll('.tag-pill');
+    pills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        var tag = this.dataset.tag;
+        pills.forEach(function (p) { p.classList.remove('active'); });
+        this.classList.add('active');
+        document.querySelectorAll('[data-tag]').forEach(function (item) {
+          if (item.classList.contains('tag-pill')) return;
+          item.style.display = (tag === 'all' || item.dataset.tag === tag) ? '' : 'none';
+        });
+      });
+    });
+  })();
+</script>
+
+<style>
+  .notes-page {
+    /* BaseLayout's <main> provides max-width and padding */
+  }
+
+  .notes-desc {
+    color: var(--color-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .notes-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* View toggle */
+  .toggle-group {
+    display: flex;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .toggle-btn {
+    background: transparent;
+    border: none;
+    padding: 7px 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    transition: background 0.15s;
+  }
+
+  .toggle-btn.active {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .toggle-btn:hover:not(.active) {
+    background: var(--color-surface);
+  }
+
+  .toggle-divider {
+    width: 1px;
+    background: var(--color-border);
+  }
+
+  /* Tag pills */
+  .tag-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tag-pill {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .tag-pill.active {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border-color: var(--color-muted);
+  }
+
+  .tag-pill:hover:not(.active) {
+    background: var(--color-surface);
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  /* ===== List view ===== */
+  .list-view {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .banner-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1.125rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    border-left: 3px solid #1D9E75;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .banner-row:hover {
+    border-color: var(--color-muted);
+    border-left-color: #1D9E75;
+  }
+
+  .banner-row.blue { border-left-color: #378ADD; }
+  .banner-row.blue:hover { border-left-color: #378ADD; }
+  .banner-row.amber { border-left-color: #BA7517; }
+  .banner-row.amber:hover { border-left-color: #BA7517; }
+  .banner-row.purple { border-left-color: #7F77DD; }
+  .banner-row.purple:hover { border-left-color: #7F77DD; }
+
+  .banner-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #E1F5EE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1rem;
+  }
+
+  .banner-icon.blue { background: #E6F1FB; }
+  .banner-icon.amber { background: #FAEEDA; }
+  .banner-icon.purple { background: #EEEDFE; }
+
+  .banner-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .banner-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0 0 0.1875rem;
+  }
+
+  .banner-desc {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    margin: 0;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .banner-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .tag-badge {
+    font-size: 0.6875rem;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 20px;
+    background: var(--color-surface);
+    color: var(--color-muted);
+    border: 1px solid var(--color-border);
+  }
+
+  .arrow {
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+  }
+
+  /* ===== Grid view ===== */
+  .grid-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem;
+  }
+
+  .grid-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .grid-card:hover {
+    border-color: var(--color-muted);
+  }
+
+  .grid-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #1D9E75;
+  }
+
+  .grid-card.blue::after { background: #378ADD; }
+  .grid-card.amber::after { background: #BA7517; }
+  .grid-card.purple::after { background: #7F77DD; }
+
+  .grid-card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .grid-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #E1F5EE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.9375rem;
+  }
+
+  .grid-icon.blue { background: #E6F1FB; }
+  .grid-icon.amber { background: #FAEEDA; }
+  .grid-icon.purple { background: #EEEDFE; }
+
+  .grid-card-title {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .grid-card-desc {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  .grid-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.25rem;
+  }
+
+  /* Dark mode icon backgrounds */
+  :global([data-theme='dark']) .banner-icon,
+  :global([data-theme='dark']) .grid-icon {
+    background: rgba(29, 158, 117, 0.15);
+  }
+  :global([data-theme='dark']) .banner-icon.blue,
+  :global([data-theme='dark']) .grid-icon.blue {
+    background: rgba(55, 138, 221, 0.15);
+  }
+  :global([data-theme='dark']) .banner-icon.amber,
+  :global([data-theme='dark']) .grid-icon.amber {
+    background: rgba(186, 117, 23, 0.15);
+  }
+  :global([data-theme='dark']) .banner-icon.purple,
+  :global([data-theme='dark']) .grid-icon.purple {
+    background: rgba(127, 119, 221, 0.15);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .banner-icon,
+    :global(:root:not([data-theme='light'])) .grid-icon {
+      background: rgba(29, 158, 117, 0.15);
+    }
+    :global(:root:not([data-theme='light'])) .banner-icon.blue,
+    :global(:root:not([data-theme='light'])) .grid-icon.blue {
+      background: rgba(55, 138, 221, 0.15);
+    }
+    :global(:root:not([data-theme='light'])) .banner-icon.amber,
+    :global(:root:not([data-theme='light'])) .grid-icon.amber {
+      background: rgba(186, 117, 23, 0.15);
+    }
+    :global(:root:not([data-theme='light'])) .banner-icon.purple,
+    :global(:root:not([data-theme='light'])) .grid-icon.purple {
+      background: rgba(127, 119, 221, 0.15);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .grid-view {
+      grid-template-columns: 1fr;
+    }
+
+    .notes-toolbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .banner-meta .tag-badge {
+      display: none;
+    }
+  }
+</style>
