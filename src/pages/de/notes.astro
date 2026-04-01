@@ -1,12 +1,5 @@
 ---
-// Redirect /de/notes → /notes (language-independent page)
+import NotesPage from '../../components/NotesPage.astro';
 ---
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="0;url=/notes" />
-    <link rel="canonical" href="/notes" />
-  </head>
-  <body></body>
-</html>
+<NotesPage lang="de" />
