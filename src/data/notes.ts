@@ -16,4 +16,12 @@ export const notes: Note[] = [
     color: 'green',
     icon: '\u{1F331}',
   },
+  {
+    title: 'LCA 101',
+    description: 'Core concepts about Life Cycle Assessment (LCA)',
+    tag: 'Sustainability',
+    url: 'https://app.heptabase.com/p/whiteboard/a19ea322-7982-4978-9441-ed235f404c44',
+    color: 'green',
+    icon: '\u{1F331}',
+  },
 ];
