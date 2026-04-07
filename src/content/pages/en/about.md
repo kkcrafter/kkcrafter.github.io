@@ -6,9 +6,15 @@ lang: en
 
 # About Me
 
-Self-characterised as a generalist based by a scientist-like mindset. Interests span across Sustainability, IT, Language Learning, Sciences, and Music.
+Self-characterised as a generalist with a scientific streak. My interests span across Sustainability, IT, Language Learning, Sciences, and Music. Sounds excessive? Maybe. But I'm hardly the only one with a complicated life.
 
-Beyond my core expertise, I am passionate about continuous learning — currently advancing my German to C1 level while exploring web development with modern tools like Astro, Docker, and CI/CD pipelines. This page serves both a portfolio and a learning journal of myself.
+My journey is complex, yet not dramatic. There is no journal of a solo traveller on a year-long trip; no story of a patient fighting chronic illness for a decade; no tale of an athlete's hard-won victory.
+
+So who am I? Just someone who likes to figure out how things work and why they happen. While things differ, they connect. Weird things happen. That's just our nature.
+
+This site is where I share my random thoughts — write-ups on things I've been learning, book reflections, and the occasional opinion on whatever catches my attention. 
+
+I hope you find something interesting and useful here.
 
 ## Skills & Interests
 
@@ -25,7 +31,7 @@ Beyond my core expertise, I am passionate about continuous learning — currentl
 ### Language
 - Native in **Cantonese**, fluent in **English** and **Mandarin**
 - Currently advancing **German** to beyond C1 level
-- Beginner level in **Japanese** and **Spanish**
+- Beginner level in Japanese and Spanish
 
 ### Sciences
 - Studied **Chemistry** and **Earth & Climate Science**

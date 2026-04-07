@@ -6,9 +6,15 @@ lang: de
 
 # Über mich
 
-Ich bezeichne mich als Generalist mit einer wissenschaftlichen Denkweise. Meine Interessen erstrecken sich über Nachhaltigkeit, IT, Sprachenlernen, Wissenschaften und Musik.
+Ich bezeichne mich selbst als Generalisten mit wissenschaftlichem Denken. Meine Interessen erstrecken sich über Nachhaltigkeit, IT, Sprachenlernen, Naturwissenschaften und Musik. Klingt übertrieben? Vielleicht. Aber ich bin kaum der Einzige mit einem komplizierten Leben.
 
-Über meine Kernkompetenz hinaus lerne ich leidenschaftlich gern Neues — derzeit bringe ich mein Deutsch auf C1-Niveau und erforsche Webentwicklung mit modernen Tools wie Astro, Docker und CI/CD-Pipelines. Diese Seite dient sowohl als Portfolio als auch als Lerntagebuch.
+Mein Lebensweg ist komplex, jedoch nicht dramatisch. Hier gibt es kein Tagebuch eines Alleinreisenden auf einer einjährigen Reise; keine Geschichte eines Patienten, der zehn Jahre lang gegen eine chronische Krankheit kämpfte; keine Erzählung vom hart erkämpften Sieg eines Athleten.
+
+Wer bin ich also? Einfach jemand, der gerne versteht, wie Dinge funktionieren und warum sie passieren. Auch wenn die Dinge verschieden sind, hängen sie zusammen. Seltsame Dinge passieren. Das liegt einfach in unserer Natur.
+
+Diese Seite ist der Ort, wo ich meine Gedanken teile — Beiträge über Dinge, die ich lerne, Buchreflexionen und gelegentliche Meinungen zu allem, was meine Aufmerksamkeit erregt.
+
+Ich hoffe, du findest hier etwas Interessantes und Nützliches.
 
 ## Fähigkeiten & Interessen
 
