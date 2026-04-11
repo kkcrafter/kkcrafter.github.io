@@ -24,4 +24,12 @@ export const notes: Note[] = [
     color: 'green',
     icon: '\u{1F331}',
   },
+  {
+    title: 'DPP 101',
+    description: 'Core concepts about Digital Product Passport (DPP)',
+    tag: 'Sustainability',
+    url: 'https://app.heptabase.com/p/whiteboard/368c2406-0c36-4223-ae5f-fbf76a3def1d',
+    color: 'green',
+    icon: '\u{1F331}',
+  }
 ];
