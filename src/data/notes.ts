@@ -34,7 +34,7 @@ export const notes: Note[] = [
   },
   {
     title: 'LkSG 101',
-    description: 'Core concepts about German Supply Chain Due Diligence Act / Lieferkettensorgfaltspflichtengesetz (LkSG)',
+    description: 'Core concepts about German Supply Chain Due Diligence Act / Liefer\u00ADketten\u00ADsorgfalts\u00ADpflichten\u00ADgesetz (LkSG)',
     tag: 'Sustainability',
     url: 'https://app.heptabase.com/p/whiteboard/1a44868e-920b-4952-bf44-19e2223caa41',
     color: 'green',

@@ -264,9 +264,10 @@ const description = t(lang, 'home.notes.description');
     color: var(--color-muted);
     margin: 0;
     line-height: 1.5;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .banner-meta {
@@ -366,6 +367,8 @@ const description = t(lang, 'home.notes.description');
     color: var(--color-muted);
     margin: 0;
     line-height: 1.55;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .grid-footer {
