@@ -5,6 +5,16 @@ import type { Lang } from './ui';
  * Unmapped tags render their slug directly.
  */
 export const tagLabels: Partial<Record<string, Record<Lang, string>>> = {
+  'lazyupdate': {
+    en: 'LazyUpdate',
+    de: 'LazyUpdate',
+    zh: 'LazyUpdate',
+  },
+  'learninglog': {
+    en: 'LearningLog',
+    de: 'LearningLog',
+    zh: 'LearningLog',
+  },
   'language-learning': {
     en: 'Language Learning',
     de: 'Sprachenlernen',
