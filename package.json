@@ -11,8 +11,8 @@
     "publish-post": "node scripts/publish-post.mjs"
   },
   "dependencies": {
-    "@astrojs/rss": "^4.0.17",
-    "@astrojs/sitemap": "^3.7.0",
-    "astro": "^5.17.1"
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.4.1"
   }
 }
