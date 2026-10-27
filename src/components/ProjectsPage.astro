@@ -1,0 +1,105 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { t, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const projects = [
+  { key: "ev", url: "https://github.com/kkcrafter/VE-curious", skills: ["Python & FastAPI", "Hardware integration", "E-Mobility"] },
+  { key: "kana", url: "https://github.com/kkcrafter/kana-monster", skills: ["React", "TypeScript", "Canvas API", "Vitest"] },
+];
+---
+
+<BaseLayout
+  title={`${t(lang, "nav.projects")} | ${t(lang, "site.title")}`}
+  description={t(lang, "projects.intro")}
+  lang={lang}
+>
+  <!-- ========== PROJECTS ========== -->
+  <section class="projects" id="projects" aria-labelledby="projects-title">
+    <h1 id="projects-title">{t(lang, "projects.title")}</h1>
+    <p class="projects__intro">{t(lang, "projects.intro")}</p>
+    <div class="projects__list">
+      {projects.map((project) => (
+        <article class="project">
+          <p class="project__status">{t(lang, `projects.${project.key}.status`)}</p>
+          <h2>{t(lang, `projects.${project.key}.title`)}</h2>
+          <p>{t(lang, `projects.${project.key}.description`)}</p>
+          <ul class="project__skills">
+            {project.skills.map((skill) => <li>{skill}</li>)}
+          </ul>
+          <details>
+            <summary>{t(lang, "projects.details")}</summary>
+            <p>{t(lang, `projects.${project.key}.detail`)}</p>
+          </details>
+          <a class="project__source" href={project.url}>{t(lang, "projects.source")}</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .projects__intro {
+    margin-bottom: 1.5rem;
+    color: var(--color-muted);
+  }
+
+  .projects__list {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .project {
+    border-top: 1px solid var(--color-border);
+    padding-top: 2rem;
+  }
+
+  .project__status {
+    color: var(--color-accent);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .project h2 {
+    font-size: clamp(1.25rem, 3vw, 1.6rem);
+  }
+
+  .project__skills {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+
+  .project summary {
+    cursor: pointer;
+    width: fit-content;
+    font-weight: 500;
+  }
+
+  .project details p {
+    margin-top: 0.75rem;
+    color: var(--color-muted);
+  }
+
+  .project__source {
+    display: inline-block;
+    margin-top: 1rem;
+  }
+
+  .project summary:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+
+</style>

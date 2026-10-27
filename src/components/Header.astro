@@ -14,6 +14,7 @@ const lang = getLangFromUrl(Astro.url);
     <div class="header__links">
       <a href={`/${lang}/`}>{t(lang, 'nav.home')}</a>
       <a href={`/${lang}/about/`}>{t(lang, 'nav.about')}</a>
+      <a href={`/${lang}/projects/`}>{t(lang, 'nav.projects')}</a>
       <a href={`/${lang}/blog/`}>{t(lang, 'nav.blog')}</a>
       <a href={`/${lang}/notes/`}>{t(lang, 'nav.notes')}</a>
       <LanguageSwitcher />
@@ -29,7 +30,7 @@ const lang = getLangFromUrl(Astro.url);
   }
 
   .header__nav {
-    max-width: var(--max-width);
+    max-width: var(--max-width-wide);
     margin: 0 auto;
     padding: 1rem 1.5rem;
     display: flex;
@@ -63,5 +64,16 @@ const lang = getLangFromUrl(Astro.url);
 
   .header__links a:hover {
     color: var(--color-accent);
+  }
+  @media (max-width: 768px) {
+    .header__nav {
+      flex-wrap: wrap;
+    }
+
+    .header__links {
+      width: 100%;
+      flex-wrap: wrap;
+      gap: 0.75rem 1rem;
+    }
   }
 </style>
